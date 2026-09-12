@@ -2,8 +2,8 @@ export class DLCreatureSettings extends FormApplication {
     static get defaultOptions() {
         const options = super.defaultOptions;
         options.id = 'sheet-modifiers';
-        options.classes = ["mosh", "sheet", "actor", "creature"];
-        options.template = 'systems/mosh/templates/dialogs/creature-settings-dialog.html';
+        options.classes = ["mosh-fork", "sheet", "actor", "creature"];
+        options.template = 'systems/mosh-fork/templates/dialogs/creature-settings-dialog.html';
         options.width = 320;
         options.height = 150;
         return options;

@@ -8,7 +8,7 @@ export class MothershipClassSheet extends MothershipItemSheet {
   /** @override */
   static get defaultOptions() {
     var options = {
-      classes: ["mosh", "sheet", "item"],
+      classes: ["mosh-fork", "sheet", "item"],
       width: 820,
       height: 820,
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description" }]

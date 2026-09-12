@@ -3,8 +3,8 @@ export class DLShipMegaDamage extends FormApplication {
     static get defaultOptions() {
         const options = super.defaultOptions;
         options.id = 'sheet-modifiers';
-        options.classes = ["mosh", "sheet", "actor", "ship"];
-        options.template = 'systems/mosh/templates/dialogs/ship-megadamage-dialog.html';
+        options.classes = ["mosh-fork", "sheet", "actor", "ship"];
+        options.template = 'systems/mosh-fork/templates/dialogs/ship-megadamage-dialog.html';
         options.width = 320;
         options.height = 'auto';
         options.resizeable = false;
@@ -41,7 +41,7 @@ export class DLShipMegaDamage extends FormApplication {
         const actorData = sheetData.object;
 
         //A script to return the data from a table.
-        let tableId = game.settings.get('mosh','table1eMegadamageEffects');
+        let tableId = game.settings.get('mosh-fork','table1eMegadamageEffects');
         //get table data
         let tableData = await fromIdUuid(tableId,{type:"RollTable"});
 
