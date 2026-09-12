@@ -1,6 +1,6 @@
 {
   "id": "mosh",
-  "title": "MoSh - Unofficial Mothership",
+  "title": "MoSh - Unofficial Mothership [FORK]",
   "description": "The unofficial Mothership system for FoundryVTT.",
   "version": "0.6.1",
   "esmodules": [
@@ -151,9 +151,9 @@
   },
   "primaryTokenAttribute": "health",
   "secondaryTokenAttribute": "other.stress",
-  "url": "https://github.com/Futil/foundry-mothership",
-  "manifest": "https://raw.githubusercontent.com/Futil/foundry-mothership/0.6.1/system.json",
-  "download": "https://github.com/Futil/foundry-mothership/releases/download/0.6.1/foundry-mothership.zip",
+  "url": "https://github.com/mechanoid23/fvtt-mosh-fork",
+  "manifest": "https://raw.githubusercontent.com/mechanoid23/fvtt-mosh-fork/fork_01/system.json",
+  "download": "https://github.com/mechanoid23/fvtt-mosh-fork/archive/refs/tags/fork_01.zip",
   "license": "LICENSE.txt",
   "authors": [
     {
