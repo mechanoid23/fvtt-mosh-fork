@@ -24,64 +24,63 @@
     <div class="whiteline"></div>
   </header>
 
-  <!-- Token image + Health/Wounds row -->
-  <div style="display: flex; gap: 8px; padding: 8px 8px 0;">
-    <img class="img profile noborder" src="{{img}}" data-edit="img" title="{{name}}" style="width: 80px; height: 80px; object-fit: cover; flex-shrink: 0;" />
+  <div class="creature-description-grid">
+    <div class="creaturedescription">
 
-    <div style="display: flex; gap: 8px; flex: 1;">
-      <!-- Health -->
-      <div class="resource healthspread minmaxtopstat" style="flex: 1;">
-        <label class="resource-label minmaxtext">{{ localize 'Mosh.Health' }}</label>
-        <div class="minmaxwrapper">
-          <input class="maxhealth-input darkGreyText" type="text" name="system.health.value" value="{{system.health.value}}" data-dtype="Number" />
-          <div class="slant"></div>
-          <input class="maxhealth-input darkGreyText" type="text" name="system.health.max" value="{{system.health.max}}" data-dtype="Number" />
+      <!-- Health / Wounds / Type / Crew / DR -->
+      <div class="grid grid-3col">
+        <div class="resource healthspread minmaxtopstat">
+          <label class="resource-label minmaxtext">{{ localize 'Mosh.Health' }}</label>
+          <div class="minmaxwrapper">
+            <input class="maxhealth-input darkGreyText" type="text" name="system.health.value" value="{{system.health.value}}" data-dtype="Number" />
+            <div class="slant"></div>
+            <input class="maxhealth-input darkGreyText" type="text" name="system.health.max" value="{{system.health.max}}" data-dtype="Number" />
+          </div>
+          <div class="healthmaxtext">{{ localize 'Mosh.Current' }}</div>
+          <div class="healthmaxtext">{{ localize 'Mosh.Maximum' }}</div>
         </div>
-        <div class="healthmaxtext">{{ localize 'Mosh.Current' }}</div>
-        <div class="healthmaxtext">{{ localize 'Mosh.Maximum' }}</div>
-      </div>
 
-      <!-- Wounds -->
-      <div class="resource healthspread minmaxtopstat" style="flex: 1;">
-        <label class="resource-label minmaxtext">{{ localize 'Mosh.Wounds' }}</label>
-        <div class="minmaxwrapper">
-          <input class="maxhealth-input darkGreyText" type="text" name="system.hits.value" value="{{system.hits.value}}" data-dtype="Number" />
-          <div class="slant"></div>
-          <input class="maxhealth-input darkGreyText" type="text" name="system.hits.max" value="{{system.hits.max}}" data-dtype="Number" />
+        <div class="resource healthspread minmaxtopstat">
+          <label class="resource-label minmaxtext">{{ localize 'Mosh.Wounds' }}</label>
+          <div class="minmaxwrapper">
+            <input class="maxhealth-input darkGreyText" type="text" name="system.hits.value" value="{{system.hits.value}}" data-dtype="Number" />
+            <div class="slant"></div>
+            <input class="maxhealth-input darkGreyText" type="text" name="system.hits.max" value="{{system.hits.max}}" data-dtype="Number" />
+          </div>
+          <div class="healthmaxtext">{{ localize 'Mosh.Current' }}</div>
+          <div class="healthmaxtext">{{ localize 'Mosh.Maximum' }}</div>
         </div>
-        <div class="healthmaxtext">{{ localize 'Mosh.Current' }}</div>
-        <div class="healthmaxtext">{{ localize 'Mosh.Maximum' }}</div>
+
+        <div class="resource healthspread minmaxtopstat">
+          <label class="resource-label minmaxtext">{{ localize 'Mosh.DMGReduction' }}</label>
+          <input class="maxhealth-input darkGreyText" type="text" name="system.stats.armor.damageReduction" value="{{system.stats.armor.damageReduction}}" data-dtype="Number" />
+        </div>
       </div>
-    </div>
-  </div>
 
-  <!-- Secondary stats row -->
-  <div class="grid grid-3col" style="padding: 8px 8px 0;">
+      <div class="grid grid-3col" style="margin-top: 8px;">
+        <div class="resource healthspread minmaxtopstat">
+          <label class="resource-label minmaxtext">{{ localize 'Mosh.Type' }}</label>
+          <input class="maxhealth-input darkGreyText" type="text" name="system.type" value="{{system.type}}" />
+        </div>
 
-    <!-- Type -->
-    <div class="resource healthspread minmaxtopstat">
-      <label class="resource-label minmaxtext">{{ localize 'Mosh.Type' }}</label>
-      <input class="maxhealth-input darkGreyText" type="text" name="system.type" value="{{system.type}}" />
-    </div>
-
-    <!-- Crew -->
-    <div class="resource healthspread minmaxtopstat">
-      <label class="resource-label minmaxtext">{{ localize 'Mosh.Crew' }}</label>
-      <div class="minmaxwrapper">
-        <input class="maxhealth-input darkGreyText" type="text" name="system.crew.value" value="{{system.crew.value}}" data-dtype="Number" />
-        <div class="slant"></div>
-        <input class="maxhealth-input darkGreyText" type="text" name="system.crew.max" value="{{system.crew.max}}" data-dtype="Number" />
+        <div class="resource healthspread minmaxtopstat">
+          <label class="resource-label minmaxtext">{{ localize 'Mosh.Crew' }}</label>
+          <div class="minmaxwrapper">
+            <input class="maxhealth-input darkGreyText" type="text" name="system.crew.value" value="{{system.crew.value}}" data-dtype="Number" />
+            <div class="slant"></div>
+            <input class="maxhealth-input darkGreyText" type="text" name="system.crew.max" value="{{system.crew.max}}" data-dtype="Number" />
+          </div>
+          <div class="healthmaxtext">{{ localize 'Mosh.Current' }}</div>
+          <div class="healthmaxtext">{{ localize 'Mosh.Maximum' }}</div>
+        </div>
       </div>
-      <div class="healthmaxtext">{{ localize 'Mosh.Current' }}</div>
-      <div class="healthmaxtext">{{ localize 'Mosh.Maximum' }}</div>
+
     </div>
 
-    <!-- Damage Reduction -->
-    <div class="resource healthspread minmaxtopstat">
-      <label class="resource-label minmaxtext">{{ localize 'Mosh.DMGReduction' }}</label>
-      <input class="maxhealth-input darkGreyText" type="text" name="system.stats.armor.damageReduction" value="{{system.stats.armor.damageReduction}}" data-dtype="Number" />
+    <!-- Token image in the side column, matching creature sheet pattern -->
+    <div class="creature-abilities">
+      <img class="img profile noborder" src="{{img}}" data-edit="img" title="{{name}}" style="height:auto; width:100%;" />
     </div>
-
   </div>
 
   {{!-- Sheet Tab Navigation --}}
