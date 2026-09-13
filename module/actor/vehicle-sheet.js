@@ -1,0 +1,74 @@
+export class MothershipVehicleSheet extends foundry.appv1.sheets.ActorSheet {
+
+    static get defaultOptions() {
+        return foundry.utils.mergeObject(super.defaultOptions, {
+            classes: ["mosh-fork", "sheet", "actor", "vehicle"],
+            template: "systems/mosh-fork/templates/actor/vehicle-sheet.html",
+            width: 600,
+            height: 500,
+            tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description" }],
+            submitOnChange: true
+        });
+    }
+
+    async getData() {
+        const data = await super.getData();
+
+        const weapons = [];
+        for (let i of data.items) {
+            if (i.type === 'weapon') weapons.push(i);
+        }
+        data.system.weaponItems = weapons;
+
+        data.enriched = {
+            description: await foundry.applications.ux.TextEditor.implementation.enrichHTML(data.system.description, { async: true }),
+            biography: await foundry.applications.ux.TextEditor.implementation.enrichHTML(data.system.biography, { async: true }),
+            notes: await foundry.applications.ux.TextEditor.implementation.enrichHTML(data.system.notes, { async: true }),
+        };
+
+        return data;
+    }
+
+    activateListeners(html) {
+        super.activateListeners(html);
+        if (!this.options.editable) return;
+
+        html.find('.stat-roll').click(ev => {
+            const statName = $(ev.currentTarget).data("key");
+            this.actor.rollCheck(null, 'low', statName, null, null, null);
+        });
+
+        html.find('.weapon-roll').click(ev => {
+            const li = ev.currentTarget.closest(".item");
+            const item = foundry.utils.duplicate(this.actor.getEmbeddedDocument("Item", li.dataset.itemId));
+            this.actor.rollCheck(null, 'low', 'combat', null, null, item);
+        });
+
+        html.find('.dmg-roll').click(ev => {
+            const li = ev.currentTarget.closest(".item");
+            const item = foundry.utils.duplicate(this.actor.getEmbeddedDocument("Item", li.dataset.itemId));
+            this.actor.rollCheck(null, null, 'damage', null, null, item);
+        });
+
+        html.find('.item-create').click(ev => {
+            ev.preventDefault();
+            const type = ev.currentTarget.dataset.type;
+            this.actor.createEmbeddedDocuments("Item", [{ name: `New ${type}`, type }]);
+        });
+
+        html.find('.item-edit').click(ev => {
+            const li = $(ev.currentTarget).parents(".item");
+            this.actor.getEmbeddedDocument("Item", li.data("itemId")).sheet.render({ force: true });
+        });
+
+        html.find('.item-delete').click(ev => {
+            const li = $(ev.currentTarget).parents(".item");
+            this.actor.deleteEmbeddedDocuments("Item", [li.data("itemId")]);
+            li.slideUp(200, () => this.render(false));
+        });
+    }
+
+    async _updateObject(event, formData) {
+        await this.object.update(foundry.utils.expandObject(formData), { diff: false });
+    }
+}

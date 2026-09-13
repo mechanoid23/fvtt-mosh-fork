@@ -2,6 +2,7 @@
 import { MothershipActor } from "./actor/actor.js";
 import { MothershipActorSheet } from "./actor/actor-sheet.js";
 import { MothershipCreatureSheet } from "./actor/creature-sheet.js";
+import { MothershipVehicleSheet } from "./actor/vehicle-sheet.js";
 import { MothershipShipSheet } from "./actor/ship-sheet.js";
 import { MothershipShipSheetSBT } from "./actor/ship-sheet-sbt.js";
 
@@ -51,6 +52,7 @@ Hooks.once('init', async function () {
   foundry.documents.collections.Actors.registerSheet("mosh-fork", MothershipCreatureSheet, {types: ['creature'], makeDefault: false});
   foundry.documents.collections.Actors.registerSheet("mosh-fork", MothershipShipSheetSBT, {types: ['ship'], makeDefault: true});
   foundry.documents.collections.Actors.registerSheet("mosh-fork", MothershipShipSheet, {types: ['ship'], makeDefault: false});
+  foundry.documents.collections.Actors.registerSheet("mosh-fork", MothershipVehicleSheet, {types: ['vehicle'], makeDefault: true});
   foundry.documents.collections.Items.unregisterSheet("core", foundry.appv1.sheets.ItemSheet);
   foundry.documents.collections.Items.registerSheet("mosh-fork", MothershipClassSheet, {types: ['class'], makeDefault: true});
   foundry.documents.collections.Items.registerSheet("mosh-fork", MothershipSkillSheet, {types: ['skill'], makeDefault: true});

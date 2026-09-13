@@ -169,7 +169,8 @@
     "Actor": {
       "character": {},
       "creature": {},
-      "ship": {}
+      "ship": {},
+      "vehicle": {}
     },
     "Item": {
       "item": {},

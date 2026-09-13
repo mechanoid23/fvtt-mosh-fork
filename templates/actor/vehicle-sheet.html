@@ -1,0 +1,113 @@
+<form class="{{cssClass}}" autocomplete="off">
+
+  <header class="creature-header-grid">
+    <input name="name" class="noborder creaturename" type="text" value="{{name}}" placeholder="{{ localize 'Mosh.Name' }}" />
+    <div class="creature-header">
+
+      <!-- Speed -->
+      <div class="mainstatwrapper">
+        <div class="resource creature-mainstat">
+          <span class="ability-mod stat-roll rollable creaturestat" data-key="speed">{{ localize 'Mosh.Speed' }}</span>
+          <input class="creaturestat noborder" style="width: 30px;" type="text" name="system.stats.speed.value" value="{{system.stats.speed.value}}" data-dtype="Number" />
+        </div>
+      </div>
+
+      <!-- Armor -->
+      <div class="mainstatwrapper">
+        <div class="resource creature-mainstat">
+          <span class="ability-mod creaturestat">{{ localize 'Mosh.Armor' }}</span>
+          <input class="creaturestat noborder" style="width: 30px;" type="text" name="system.stats.armor.value" value="{{system.stats.armor.value}}" data-dtype="Number" />
+        </div>
+      </div>
+
+    </div>
+    <div class="whiteline"></div>
+  </header>
+
+  <!-- Secondary stats row -->
+  <div class="grid grid-3col" style="padding: 8px 8px 0;">
+
+    <!-- Type -->
+    <div class="resource healthspread minmaxtopstat">
+      <label class="resource-label minmaxtext">{{ localize 'Mosh.Type' }}</label>
+      <input class="maxhealth-input darkGreyText" type="text" name="system.type" value="{{system.type}}" />
+    </div>
+
+    <!-- Crew -->
+    <div class="resource healthspread minmaxtopstat">
+      <label class="resource-label minmaxtext">{{ localize 'Mosh.Crew' }}</label>
+      <div class="minmaxwrapper">
+        <input class="maxhealth-input darkGreyText" type="text" name="system.crew.value" value="{{system.crew.value}}" data-dtype="Number" />
+        <div class="slant"></div>
+        <input class="maxhealth-input darkGreyText" type="text" name="system.crew.max" value="{{system.crew.max}}" data-dtype="Number" />
+      </div>
+      <div class="healthmaxtext">{{ localize 'Mosh.Current' }}</div>
+      <div class="healthmaxtext">{{ localize 'Mosh.Maximum' }}</div>
+    </div>
+
+    <!-- Damage Reduction -->
+    <div class="resource healthspread minmaxtopstat">
+      <label class="resource-label minmaxtext">{{ localize 'Mosh.DMGReduction' }}</label>
+      <input class="maxhealth-input darkGreyText" type="text" name="system.stats.armor.damageReduction" value="{{system.stats.armor.damageReduction}}" data-dtype="Number" />
+    </div>
+
+  </div>
+
+  {{!-- Sheet Tab Navigation --}}
+  <nav class="mosh sheet-tabs tabs" data-group="primary">
+    <a class="tab-select" data-tab="weapons">{{ localize 'Mosh.Weapons' }}</a>
+    <a class="tab-select" data-tab="description">{{ localize 'Mosh.Description' }}</a>
+    <a class="tab-select" data-tab="biography">{{ localize 'Mosh.Bio' }}</a>
+    <a class="tab-select" data-tab="notes">{{ localize 'Mosh.Notes' }}</a>
+  </nav>
+
+  <section class="sheet-body">
+
+    {{!-- Weapons Tab --}}
+    <div class="tab items" data-group="primary" data-tab="weapons">
+      <ol class="items-list">
+        <li class="item flexrow item-header">
+          <div class="item-image"></div>
+          <div class="skill-stat" style="flex-grow: 2;">{{ localize 'Mosh.WeaponName' }}</div>
+          <div class="skill-stat">{{ localize 'Mosh.Damage' }}</div>
+          <div class="skill-stat">{{ localize 'Mosh.Range' }}</div>
+          <div class="item-controls">
+            <a class="item-control item-create" data-type="weapon" title="{{ localize 'Mosh.CreateWeapon' }}"><i class="fas fa-plus"></i> {{ localize 'Mosh.Add' }}</a>
+          </div>
+        </li>
+        {{#each system.weaponItems as |weapon id|}}
+        <li class="item flexrow dropitem" data-item-id="{{weapon._id}}">
+          <div class="item-image"><img src="{{weapon.img}}" title="{{weapon.name}}" width="24" height="24" /></div>
+          <div class="skill-name weapon-roll list-roll" style="flex-grow: 2.05;">{{weapon.name}}</div>
+          <div class="skill-stat dmg-roll list-roll">{{weapon.system.damage}}</div>
+          {{#if weapon.system.ranges.value}}
+          <div class="skill-stat">{{weapon.system.ranges.value}}</div>
+          {{else}}
+          <div class="skill-stat">{{ localize 'Mosh.NA' }}</div>
+          {{/if}}
+          <div class="item-controls">
+            <a class="item-control item-edit" title="{{ localize 'Mosh.EditWeapon' }}"><i class="fas fa-edit"></i></a>
+            <a class="item-control item-delete" title="{{ localize 'Mosh.DeleteWeapon' }}"><i class="fas fa-trash"></i></a>
+          </div>
+        </li>
+        {{/each}}
+      </ol>
+    </div>
+
+    {{!-- Description Tab --}}
+    <div class="tab biography" data-group="primary" data-tab="description">
+      {{editor enriched.description target="system.description" button=true owner=owner editable=true}}
+    </div>
+
+    {{!-- Biography Tab --}}
+    <div class="tab biography" data-group="primary" data-tab="biography">
+      {{editor enriched.biography target="system.biography" button=true editable=true}}
+    </div>
+
+    {{!-- Notes Tab --}}
+    <div class="tab biography" data-group="primary" data-tab="notes">
+      {{editor enriched.notes target="system.notes" button=true editable=true}}
+    </div>
+
+  </section>
+</form>
