@@ -75,6 +75,9 @@
         </div>
       </div>
 
+      <br />
+      {{editor enriched.description target="system.description" button=true owner=owner editable=true}}
+
     </div>
 
     <!-- Token image in the side column, matching creature sheet pattern -->
@@ -86,7 +89,6 @@
   {{!-- Sheet Tab Navigation --}}
   <nav class="mosh sheet-tabs tabs" data-group="primary">
     <a class="tab-select" data-tab="weapons">{{ localize 'Mosh.Weapons' }}</a>
-    <a class="tab-select" data-tab="description">{{ localize 'Mosh.Description' }}</a>
     <a class="tab-select" data-tab="notes">{{ localize 'Mosh.Notes' }}</a>
   </nav>
 
@@ -121,11 +123,6 @@
         </li>
         {{/each}}
       </ol>
-    </div>
-
-    {{!-- Description Tab --}}
-    <div class="tab biography" data-group="primary" data-tab="description">
-      {{editor enriched.description target="system.description" button=true owner=owner editable=true}}
     </div>
 
     {{!-- Notes Tab --}}

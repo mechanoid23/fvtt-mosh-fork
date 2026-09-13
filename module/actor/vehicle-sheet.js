@@ -6,7 +6,7 @@ export class MothershipVehicleSheet extends foundry.appv1.sheets.ActorSheet {
             template: "systems/mosh-fork/templates/actor/vehicle-sheet.html",
             width: 820,
             height: 770,
-            tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description" }],
+            tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "weapons" }],
             submitOnChange: true
         });
     }
