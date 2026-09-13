@@ -52,8 +52,14 @@
         </div>
 
         <div class="resource healthspread minmaxtopstat">
-          <label class="resource-label minmaxtext">{{ localize 'Mosh.DMGReduction' }}</label>
-          <input class="maxhealth-input darkGreyText" type="text" name="system.stats.armor.damageReduction" value="{{system.stats.armor.damageReduction}}" data-dtype="Number" />
+          <label class="resource-label minmaxtext">{{ localize 'Mosh.Crew' }}</label>
+          <div class="minmaxwrapper">
+            <input class="maxhealth-input darkGreyText" type="text" name="system.crew.value" value="{{system.crew.value}}" data-dtype="Number" />
+            <div class="slant"></div>
+            <input class="maxhealth-input darkGreyText" type="text" name="system.crew.max" value="{{system.crew.max}}" data-dtype="Number" />
+          </div>
+          <div class="healthmaxtext">{{ localize 'Mosh.Current' }}</div>
+          <div class="healthmaxtext">{{ localize 'Mosh.Maximum' }}</div>
         </div>
       </div>
 
@@ -64,14 +70,8 @@
         </div>
 
         <div class="resource healthspread minmaxtopstat">
-          <label class="resource-label minmaxtext">{{ localize 'Mosh.Crew' }}</label>
-          <div class="minmaxwrapper">
-            <input class="maxhealth-input darkGreyText" type="text" name="system.crew.value" value="{{system.crew.value}}" data-dtype="Number" />
-            <div class="slant"></div>
-            <input class="maxhealth-input darkGreyText" type="text" name="system.crew.max" value="{{system.crew.max}}" data-dtype="Number" />
-          </div>
-          <div class="healthmaxtext">{{ localize 'Mosh.Current' }}</div>
-          <div class="healthmaxtext">{{ localize 'Mosh.Maximum' }}</div>
+          <label class="resource-label minmaxtext">{{ localize 'Mosh.DMGReduction' }}</label>
+          <input class="maxhealth-input darkGreyText" type="text" name="system.stats.armor.damageReduction" value="{{system.stats.armor.damageReduction}}" data-dtype="Number" />
         </div>
       </div>
 
