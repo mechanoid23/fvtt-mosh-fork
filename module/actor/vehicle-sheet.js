@@ -18,15 +18,15 @@ export class MothershipVehicleSheet extends foundry.appv1.sheets.ActorSheet {
         for (let i of data.items) {
             if (i.type === 'weapon') weapons.push(i);
         }
-        data.system.weaponItems = weapons;
+        data.data.system.weaponItems = weapons;
 
-        data.enriched = {
-            description: await foundry.applications.ux.TextEditor.implementation.enrichHTML(data.system.description, { async: true }),
-            biography: await foundry.applications.ux.TextEditor.implementation.enrichHTML(data.system.biography, { async: true }),
-            notes: await foundry.applications.ux.TextEditor.implementation.enrichHTML(data.system.notes, { async: true }),
+        data.data.enriched = {
+            description: await foundry.applications.ux.TextEditor.implementation.enrichHTML(data.data.system.description, { async: true }),
+            biography: await foundry.applications.ux.TextEditor.implementation.enrichHTML(data.data.system.biography, { async: true }),
+            notes: await foundry.applications.ux.TextEditor.implementation.enrichHTML(data.data.system.notes, { async: true }),
         };
 
-        return data;
+        return data.data;
     }
 
     activateListeners(html) {
