@@ -57,7 +57,6 @@
   <nav class="mosh sheet-tabs tabs" data-group="primary">
     <a class="tab-select" data-tab="weapons">{{ localize 'Mosh.Weapons' }}</a>
     <a class="tab-select" data-tab="description">{{ localize 'Mosh.Description' }}</a>
-    <a class="tab-select" data-tab="biography">{{ localize 'Mosh.Bio' }}</a>
     <a class="tab-select" data-tab="notes">{{ localize 'Mosh.Notes' }}</a>
   </nav>
 
@@ -97,11 +96,6 @@
     {{!-- Description Tab --}}
     <div class="tab biography" data-group="primary" data-tab="description">
       {{editor enriched.description target="system.description" button=true owner=owner editable=true}}
-    </div>
-
-    {{!-- Biography Tab --}}
-    <div class="tab biography" data-group="primary" data-tab="biography">
-      {{editor enriched.biography target="system.biography" button=true editable=true}}
     </div>
 
     {{!-- Notes Tab --}}
