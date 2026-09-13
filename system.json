@@ -152,7 +152,7 @@
   "primaryTokenAttribute": "health",
   "secondaryTokenAttribute": "other.stress",
   "url": "https://github.com/mechanoid23/fvtt-mosh-fork",
-  "manifest": "https://raw.githubusercontent.com/mechanoid23/fvtt-mosh-fork/fork_02/system.json",
+  "manifest": "https://raw.githubusercontent.com/mechanoid23/fvtt-mosh-fork/master/system.json",
   "download": "https://github.com/mechanoid23/fvtt-mosh-fork/releases/download/fork_02/fvtt-mosh-fork.zip",
   "license": "LICENSE.txt",
   "authors": [
