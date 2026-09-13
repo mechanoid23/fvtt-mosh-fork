@@ -15,7 +15,7 @@ export class MothershipShipSheetSBT extends  foundry.appv1.sheets.ActorSheet {
     static get defaultOptions() {
 
         var options = {
-            classes: ["mosh-fork", "sheet", "actor", "ship"],
+            classes: ["mosh", "sheet", "actor", "ship"],
             template: "systems/mosh-fork/templates/actor/ship-sheet-sbt.html",
             width: 700,
             height: 840,

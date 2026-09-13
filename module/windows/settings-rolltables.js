@@ -3,9 +3,9 @@ export class rolltableConfig extends FormApplication {
         const options = super.defaultOptions;
         console.log(options);
         //options.id = 'sheet-modifiers';
-        //options.classes = ["mosh-fork", "sheet", "actor", "ship"];
+        //options.classes = ["mosh", "sheet", "actor", "ship"];
         options.id = 'rolltable-modifiers';
-        options.classes = ["mosh-fork"];
+        options.classes = ["mosh"];
         options.template = 'systems/mosh-fork/templates/dialogs/settings-rolltableconfig-dialog.html';
         options.width = 800;
         options.height = 'auto';

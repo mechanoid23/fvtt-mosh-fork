@@ -5,7 +5,7 @@ export class DLShipMacros extends foundry.applications.sheets.BaseSheet {
     static get defaultOptions() {
         const options = super.defaultOptions;
         options.id = 'sheet-modifiers';
-        options.classes = ["mosh-fork", "sheet", "actor", "ship"];
+        options.classes = ["mosh", "sheet", "actor", "ship"];
         options.template = 'systems/mosh-fork/templates/dialogs/ship-macro-dialog.html';
         options.width = 320;
         options.height = 'auto';

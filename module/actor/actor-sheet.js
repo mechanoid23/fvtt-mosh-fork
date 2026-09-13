@@ -8,7 +8,7 @@ export class MothershipActorSheet extends foundry.appv1.sheets.ActorSheet {
   /** @override */
   static get defaultOptions() {
     var options = {
-      classes: ["mosh-fork", "sheet", "actor", "character"],
+      classes: ["mosh", "sheet", "actor", "character"],
       template: "systems/mosh-fork/templates/actor/actor-sheet.html",
       width: 820,
       height: 820,

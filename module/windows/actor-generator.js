@@ -2,7 +2,7 @@ export class DLActorGenerator extends FormApplication {
    static get defaultOptions() {
       const options = super.defaultOptions;
       options.id = 'sheet-modifiers';
-      options.classes = ["mosh-fork", "sheet", "actor", "character"];
+      options.classes = ["mosh", "sheet", "actor", "character"];
       options.template = 'systems/mosh-fork/templates/dialogs/actor-generator-dialog.html';
       options.width = 800;
       options.height = "auto";

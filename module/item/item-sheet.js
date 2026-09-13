@@ -7,7 +7,7 @@ export class MothershipItemSheet extends foundry.appv1.sheets.ItemSheet {
   /** @override */
   static get defaultOptions() {
     var options = {
-      classes: ["mosh-fork", "sheet", "item"],
+      classes: ["mosh", "sheet", "item"],
       width: 600,
       height: 500,
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description" }]
