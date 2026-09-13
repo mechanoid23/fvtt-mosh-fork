@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-An unofficial FoundryVTT game system for the Mothership RPG (by Tuesday Knight Games). Supports both 0th edition (0e) and 1st edition (1e) rules. The system ID is `mosh`.
+A fork of the unofficial FoundryVTT game system for the Mothership RPG (by Tuesday Knight Games), maintained at `mechanoid23/fvtt-mosh-fork`. Supports both 0th edition (0e) and 1st edition (1e) rules. The system ID is `mosh-fork` (distinct from the upstream `mosh` so both can be installed in Foundry simultaneously).
 
 ## Build commands
 
@@ -32,6 +32,7 @@ SCSS source lives in `scss/` and compiles to `css/mosh.css`. There is no JS buil
 | `module/actor/creature-sheet.js` | `MothershipCreatureSheet` | `creature` |
 | `module/actor/ship-sheet-sbt.js` | `MothershipShipSheetSBT` | `ship` (default) |
 | `module/actor/ship-sheet.js` | `MothershipShipSheet` | `ship` (alternate) |
+| `module/actor/vehicle-sheet.js` | `MothershipVehicleSheet` | `vehicle` |
 | `module/item/item-sheet.js` | `MothershipItemSheet` | most item types |
 | `module/item/class-sheet.js` | `MothershipClassSheet` | `class` |
 | `module/item/skill-sheet.js` | `MothershipSkillSheet` | `skill` |
@@ -45,12 +46,42 @@ SCSS source lives in `scss/` and compiles to `css/mosh.css`. There is no JS buil
 - **character**: stats (strength, speed, intellect, combat, sanity, fear, body, armor), stress/calm, wounds (hits), health, skills, equipment
 - **creature**: configurable stats (combat, instinct, speed, loyalty, armor, sanity — each togglable via `enabled`)
 - **ship**: hull/fuel/stock/crew supplies, weapon hardpoints, megadamage system
+- **vehicle**: speed, armor (value + damageReduction), crew (value/max), weapons (value/max), description/biography/notes; weapon items can be embedded
 
 ### Templates
 Handlebars templates in `templates/` organized by `actor/`, `item/`, `chat/`, `dialogs/`.
 
 ### Compendium packs
 `packs/*.db` (LevelDB) — conditions, macros, and rolltables for each edition. Declared in `system.json`. The source JS files for macros live in `_macros/hotbar_0e/`, `_macros/hotbar_1e/`, `_macros/triggered_0e/`, `_macros/triggered_1e/`.
+
+## Releasing updates
+
+The fork uses GitHub Releases for Foundry package distribution. To ship an update:
+
+1. Make changes, bump `"version"` in `system.json`, and update `"download"` to the next tag (e.g. `fork_06`)
+2. Commit and push to `master`
+3. Build a flat ZIP from the repo root (Foundry requires `system.json` at the ZIP root):
+   ```bash
+   zip -r /tmp/fvtt-mosh-fork.zip . \
+     --exclude "*.git*" --exclude "*node_modules*" --exclude "*_releases*" \
+     --exclude "*.DS_Store" --exclude "*/scss/*" --exclude "*package-lock.json" \
+     --exclude "*/\.*" -q
+   ```
+4. Create the GitHub release:
+   ```bash
+   gh release create fork_06 /tmp/fvtt-mosh-fork.zip \
+     --repo mechanoid23/fvtt-mosh-fork --title "fork_06"
+   ```
+
+The `"manifest"` URL points to `master/system.json` so Foundry always sees the latest version number and can detect updates. The `"download"` URL points to the specific release ZIP.
+
+Install/update in Foundry via: `https://raw.githubusercontent.com/mechanoid23/fvtt-mosh-fork/master/system.json`
+
+## Fork-specific conventions
+
+- **System ID**: `mosh-fork` — used in `registerSheet`, `game.settings.get/register`, pack `system` fields, and `Compendium.mosh-fork.*` references. Do NOT change CSS class names in `defaultOptions.classes` — those stay as `"mosh"` to match the compiled CSS in `css/mosh.css`.
+- **CSS classes**: Sheet `defaultOptions.classes` arrays use `"mosh"` (not `"mosh-fork"`) as the first class. The compiled CSS targets `.mosh`. Do not rename these.
+- **getData() pattern**: Sheet `getData()` calls `super.getData()`, works on `data.data.*`, and returns `data.data`. The Handlebars template context is `data.data`.
 
 ## Key conventions
 
