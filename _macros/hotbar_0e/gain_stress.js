@@ -1,5 +1,5 @@
 //init vars
-let macroTarget = game.settings.get('mosh','macroTarget');
+let macroTarget = game.settings.get('mosh-fork','macroTarget');
 //warn user if character is not selected
 if ((macroTarget === 'character' && !game.user.character) || (macroTarget === 'token' && !canvas.tokens.controlled.length)) {
   //warn player
@@ -15,7 +15,7 @@ if ((macroTarget === 'character' && !game.user.character) || (macroTarget === 't
     content: `
       <div class ="macro_window" style="margin-bottom : 7px;">
         <div class="grid grid-2col" style="grid-template-columns: 150px auto">
-          <div class="macro_img"><img src="systems/mosh/images/icons/ui/macros/gain_stress.png" style="border:none"/></div>
+          <div class="macro_img"><img src="systems/mosh-fork/images/icons/ui/macros/gain_stress.png" style="border:none"/></div>
           <div class="macro_desc">
             <h4>Gain Stress</h4>
             <strong>You gain 1 Stress every time you fail a Stat Check or Save.</strong> Occasionally, certain locations or entities can automatically give you Stress from interacting with or witnessing them. Your <strong>Minimum Stress</strong> starts at 2, and the <strong>Maximum Stress you can have is 20.</strong> Any Stress you take over 20 instead reduces the most relevant Stat or Save by that amount.

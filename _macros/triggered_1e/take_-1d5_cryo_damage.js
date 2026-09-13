@@ -3,7 +3,7 @@ prepCryoDamage();
 //tell the actor to run the function
 async function prepCryoDamage() {
   //determine who to run the macro for
-  if (game.settings.get('mosh','macroTarget') === 'character') {
+  if (game.settings.get('mosh-fork','macroTarget') === 'character') {
     //is there a selected character? warn if no
     if (!game.user.character) {
       //warn player
@@ -12,7 +12,7 @@ async function prepCryoDamage() {
       //run the function for the player's 'Selected Character'
       game.user.character.takeCryoDamage('-1d5');
     }
-  } else if (game.settings.get('mosh','macroTarget') === 'token') {
+  } else if (game.settings.get('mosh-fork','macroTarget') === 'token') {
     //is there a selected character? warn if no
     if (!canvas.tokens.controlled.length) {
       //warn player

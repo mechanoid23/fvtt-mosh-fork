@@ -1,5 +1,5 @@
 //init vars
-let macroTarget = game.settings.get('mosh','macroTarget');
+let macroTarget = game.settings.get('mosh-fork','macroTarget');
 //warn user if character is not selected
 if ((macroTarget === 'character' && !game.user.character) || (macroTarget === 'token' && !canvas.tokens.controlled.length)) {
   //warn player
@@ -17,7 +17,7 @@ if ((macroTarget === 'character' && !game.user.character) || (macroTarget === 't
       <div class="macro_window">
         <div class="grid grid-2col" style="grid-template-columns: 150px auto">
           <div class="macro_img">
-            <img src="systems/mosh/images/icons/ui/rolltables/death_save.png" />
+            <img src="systems/mosh-fork/images/icons/ui/rolltables/death_save.png" />
           </div>
           <div class="macro_desc">
             <h4>Death Save</h4>
