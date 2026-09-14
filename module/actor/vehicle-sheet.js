@@ -3,7 +3,7 @@ export class MothershipVehicleSheet extends foundry.appv1.sheets.ActorSheet {
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
             classes: ["mosh", "sheet", "actor", "vehicle"],
-            template: "systems/mosh-fork/templates/actor/vehicle-sheet.html",
+            template: "systems/mosh/templates/actor/vehicle-sheet.html",
             width: 820,
             height: 770,
             tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "weapons" }],

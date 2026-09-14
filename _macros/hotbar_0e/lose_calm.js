@@ -1,5 +1,5 @@
 //init vars
-let macroTarget = game.settings.get('mosh-fork','macroTarget');
+let macroTarget = game.settings.get('mosh','macroTarget');
 //warn user if character is not selected
 if ((macroTarget === 'character' && !game.user.character) || (macroTarget === 'token' && !canvas.tokens.controlled.length)) {
   //warn player
@@ -15,7 +15,7 @@ if ((macroTarget === 'character' && !game.user.character) || (macroTarget === 't
     content: `
       <div class ="macro_window" style="margin-bottom : 7px;">
         <div class="grid grid-2col" style="grid-template-columns: 150px auto">
-          <div class="macro_img"><img src="systems/mosh-fork/images/icons/ui/macros/gain_stress.png" style="border:none"/></div>
+          <div class="macro_img"><img src="systems/mosh/images/icons/ui/macros/gain_stress.png" style="border:none"/></div>
           <div class="macro_desc">
             <h4>Lose Calm</h4>
             Occasionally, certain locations or entities can automatically give you Stress from interacting with or witnessing them. You live in a terrifying, uncaring universe, so your <strong>Maximum Calm</strong> caps out at 85 and cannot go lower than zero.

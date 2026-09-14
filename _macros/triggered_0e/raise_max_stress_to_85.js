@@ -3,7 +3,7 @@ prepModifyActor();
 //tell the actor to run the function
 async function prepModifyActor(fieldAddress,modValue,modRollString,outputChatMsg) {
   //determine who to run the macro for
-  if (game.settings.get('mosh-fork','macroTarget') === 'character') {
+  if (game.settings.get('mosh','macroTarget') === 'character') {
     //is there a selected character? warn if no
     if (!game.user.character) {
       //warn player
@@ -18,7 +18,7 @@ async function prepModifyActor(fieldAddress,modValue,modRollString,outputChatMsg
       //run the function for the player's 'Selected Character'
       game.user.character.modifyActor('system.other.stress.max',raiseBy,null,true);
     }
-  } else if (game.settings.get('mosh-fork','macroTarget') === 'token') {
+  } else if (game.settings.get('mosh','macroTarget') === 'token') {
     //is there a selected character? warn if no
     if (!canvas.tokens.controlled.length) {
       //warn player

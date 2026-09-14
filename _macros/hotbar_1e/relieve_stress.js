@@ -1,5 +1,5 @@
 //init vars
-let macroTarget = game.settings.get('mosh-fork','macroTarget');
+let macroTarget = game.settings.get('mosh','macroTarget');
 //warn user if character is not selected
 if ((macroTarget === 'character' && !game.user.character) || (macroTarget === 'token' && !canvas.tokens.controlled.length)) {
   //warn player
@@ -15,7 +15,7 @@ if ((macroTarget === 'character' && !game.user.character) || (macroTarget === 't
       content: `
         <div class ="macro_window" style="margin-bottom : 7px;">
           <div class="grid grid-2col" style="grid-template-columns: 150px auto">
-            <div class="macro_img"><img src="systems/mosh-fork/images/icons/ui/macros/relieve_stress.png" style="border:none"/></div>
+            <div class="macro_img"><img src="systems/mosh/images/icons/ui/macros/relieve_stress.png" style="border:none"/></div>
             <div class="macro_desc">
               <h4>Relieve Stress</h4>
               Occasionally, certain moments, places, or events can automatically <strong>relieve your stress.</strong> Escaping perilous situations, finding a serene location, or experiencing a touching moment with a loved one can have meaningful impacts on your mood and outlook on life. If your stress is getting close to 20, you should consider making a <strong>Rest Save</strong> - as the effects of a failed <strong>Panic Check</strong> can be devastating.

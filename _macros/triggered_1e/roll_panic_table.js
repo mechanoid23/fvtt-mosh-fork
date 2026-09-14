@@ -1,1 +1,1 @@
-game.mosh.initRollTable(game.settings.get('mosh-fork','table1ePanicStressNormal'),`1d20`,`high`,false,false,'system.other.stress.value','>');
+game.mosh.initRollTable(game.settings.get('mosh','table1ePanicStressNormal'),`1d20`,`high`,false,false,'system.other.stress.value','>');
