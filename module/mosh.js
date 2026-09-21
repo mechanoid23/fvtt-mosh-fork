@@ -11,6 +11,9 @@ import { MothershipItemSheet } from "./item/item-sheet.js";
 import { MothershipClassSheet } from "./item/class-sheet.js";
 import { MothershipSkillSheet } from "./item/skill-sheet.js";
 
+import { CharacterData, CreatureData, ShipData, VehicleData } from "./data/actors/index.js";
+import { ItemData, SkillData, WeaponData, ArmorData, AbilityData, ModuleData, ConditionData, CrewData, RepairData, ClassData } from "./data/items/index.js";
+
 import {
   registerSettings
 } from "./settings.js";
@@ -44,6 +47,23 @@ Hooks.once('init', async function () {
   // Define custom Entity classes
   CONFIG.Actor.documentClass = MothershipActor;
   CONFIG.Item.documentClass = MothershipItem;
+
+  // Register system data models (replaces template.json)
+  CONFIG.Actor.dataModels.character = CharacterData;
+  CONFIG.Actor.dataModels.creature  = CreatureData;
+  CONFIG.Actor.dataModels.ship      = ShipData;
+  CONFIG.Actor.dataModels.vehicle   = VehicleData;
+
+  CONFIG.Item.dataModels.item      = ItemData;
+  CONFIG.Item.dataModels.skill     = SkillData;
+  CONFIG.Item.dataModels.weapon    = WeaponData;
+  CONFIG.Item.dataModels.armor     = ArmorData;
+  CONFIG.Item.dataModels.ability   = AbilityData;
+  CONFIG.Item.dataModels.module    = ModuleData;
+  CONFIG.Item.dataModels.condition = ConditionData;
+  CONFIG.Item.dataModels.crew      = CrewData;
+  CONFIG.Item.dataModels.repair    = RepairData;
+  CONFIG.Item.dataModels.class     = ClassData;
 
 
   // Register sheet application classes
