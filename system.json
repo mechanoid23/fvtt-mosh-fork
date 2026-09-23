@@ -2,7 +2,7 @@
   "id": "mosh",
   "title": "MoSh - Unofficial Mothership [FORK]",
   "description": "The unofficial Mothership system for FoundryVTT.",
-  "version": "0.6.13",
+  "version": "0.6.14",
   "esmodules": [
     "module/mosh.js"
   ],
@@ -10,6 +10,30 @@
     "css/mosh.css"
   ],
   "packs": [
+    {
+      "name": "abilities_psionics_1e",
+      "label": "Psionic Abilities (1e)",
+      "system": "mosh",
+      "path": "packs/abilities_psionics_1e.db",
+      "type": "Item",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "classes_1e",
+      "label": "Classes (1e)",
+      "system": "mosh",
+      "path": "packs/classes_1e.db",
+      "type": "Item",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
     {
       "name": "conditions_1e",
       "label": "Conditions (1e)",
@@ -153,7 +177,7 @@
   "secondaryTokenAttribute": "other.stress",
   "url": "https://github.com/mechanoid23/fvtt-mosh-fork",
   "manifest": "https://raw.githubusercontent.com/mechanoid23/fvtt-mosh-fork/master/system.json",
-  "download": "https://github.com/mechanoid23/fvtt-mosh-fork/releases/download/fork_14/fvtt-mosh-fork.zip",
+  "download": "https://github.com/mechanoid23/fvtt-mosh-fork/releases/download/fork_15/fvtt-mosh-fork.zip",
   "license": "LICENSE.txt",
   "authors": [
     {

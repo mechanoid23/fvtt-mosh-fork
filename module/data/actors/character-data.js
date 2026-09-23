@@ -73,6 +73,12 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
         stressdesc: new fields.SchemaField({
           value: new fields.StringField({ initial: "" }),
         }),
+        potential: new fields.SchemaField({
+          value:   new fields.NumberField({ initial: 0, min: 0 }),
+          max:     new fields.NumberField({ initial: 0 }),
+          label:   new fields.StringField({ initial: "Potential" }),
+          enabled: new fields.BooleanField({ initial: false }),
+        }),
       }),
     };
   }
