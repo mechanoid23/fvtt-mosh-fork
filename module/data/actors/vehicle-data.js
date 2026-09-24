@@ -11,6 +11,9 @@ export class VehicleData extends foundry.abstract.TypeDataModel {
       notes:       new fields.StringField({ initial: "" }),
       description: new fields.StringField({ initial: "" }),
       type:        new fields.StringField({ initial: "" }),
+      topSpeed:    new fields.StringField({ initial: "" }),
+      range:       new fields.StringField({ initial: "" }),
+      cost:        new fields.NumberField({ initial: 0 }),
 
       crew: new fields.SchemaField({
         value: new fields.NumberField({ initial: 0 }),

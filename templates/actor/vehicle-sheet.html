@@ -73,6 +73,23 @@
           <label class="resource-label minmaxtext">{{ localize 'Mosh.DMGReduction' }}</label>
           <input class="maxhealth-input darkGreyText" type="text" name="system.stats.armor.damageReduction" value="{{system.stats.armor.damageReduction}}" data-dtype="Number" />
         </div>
+
+        <div class="resource healthspread minmaxtopstat">
+          <label class="resource-label minmaxtext">{{ localize 'Mosh.Cost' }}</label>
+          <input class="maxhealth-input darkGreyText" type="text" name="system.cost" value="{{system.cost}}" data-dtype="Number" />
+        </div>
+      </div>
+
+      <div class="grid grid-3col" style="margin-top: 8px;">
+        <div class="resource healthspread minmaxtopstat" style="grid-column: span 2;">
+          <label class="resource-label minmaxtext">{{ localize 'Mosh.TopSpeed' }}</label>
+          <input class="maxhealth-input darkGreyText" type="text" name="system.topSpeed" value="{{system.topSpeed}}" />
+        </div>
+
+        <div class="resource healthspread minmaxtopstat">
+          <label class="resource-label minmaxtext">{{ localize 'Mosh.Range' }}</label>
+          <input class="maxhealth-input darkGreyText" type="text" name="system.range" value="{{system.range}}" />
+        </div>
       </div>
 
       <br />
