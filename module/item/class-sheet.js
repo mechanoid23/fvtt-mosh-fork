@@ -33,20 +33,20 @@ export class MothershipClassSheet extends MothershipItemSheet {
         data.system.base_adjustment.skills_granted_object.push(await fromUuid(skill));
     };
 
-    console.log(data.system.selected_adjustment.choose_skill_or);
-    let choose_skill_or = data.system.selected_adjustment.choose_skill_or;
+    let choose_skill_or = data.system.selected_adjustment.choose_skill_or.map(group => {
+      if (typeof group === 'string') { try { return JSON.parse(group); } catch(e) { return []; } }
+      return Array.isArray(group) ? group : Object.values(group);
+    });
+    data.system.selected_adjustment.choose_skill_or = choose_skill_or;
     for (const [ig, group] of choose_skill_or.entries()){
-      const groupArr = Array.isArray(group) ? group : Object.values(group);
-      for (const [io, option] of groupArr.entries()){
-        let names = [];
-        data.system.selected_adjustment.choose_skill_or[ig][io].from_list_names = [];
-        const fromList = Array.isArray(option.from_list) ? option.from_list : Object.values(option.from_list);
-        for(const [is, skill] of fromList.entries()){
+      for (const [io, option] of group.entries()){
+        const fromList = Array.isArray(option.from_list) ? option.from_list : Object.values(option.from_list ?? {});
+        const names = [];
+        for(const skill of fromList){
           names.push((await fromUuid(skill)).name);
         }
         data.system.selected_adjustment.choose_skill_or[ig][io].from_list_names = names;
       }
-      console.log(data.system.selected_adjustment.choose_skill_or);
     }
 
     data.system.common_skills_object = [];

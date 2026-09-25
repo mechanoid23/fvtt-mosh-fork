@@ -25,7 +25,7 @@ export class ClassData extends foundry.abstract.TypeDataModel {
       }),
 
       selected_adjustment: new fields.SchemaField({
-        choose_stat: new fields.ArrayField(new fields.StringField()),
+        choose_stat: new fields.ArrayField(new fields.ObjectField()),
         choose_skill_and: new fields.SchemaField({
           trained:          new fields.NumberField({ initial: 0 }),
           expert:           new fields.NumberField({ initial: 0 }),
@@ -33,7 +33,7 @@ export class ClassData extends foundry.abstract.TypeDataModel {
           master:           new fields.NumberField({ initial: 0 }),
           master_full_set:  new fields.NumberField({ initial: 0 }),
         }),
-        choose_skill_or: new fields.ArrayField(new fields.StringField()),
+        choose_skill_or: new fields.ArrayField(new fields.ObjectField()),
       }),
 
       roll_tables: new fields.SchemaField({

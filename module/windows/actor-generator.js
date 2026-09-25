@@ -94,6 +94,11 @@ export class DLActorGenerator extends FormApplication {
          name:game.i18n.localize("Mosh.Body")
       }))
    }
+   async rollPotential(html) {
+      this.rollDices("2d10+10", html, `system.stats.potential.value`, game.i18n.format("Mosh.RollingForGeneric",{
+         name:game.i18n.localize("Mosh.Potential")
+      }))
+   }
    async rollCredits(html) {
       this.rollDices("2d10*10", html, `system.credits.value`,  game.i18n.format("Mosh.RollingForGeneric",{
          name:game.i18n.localize("Mosh.Credits")
@@ -182,6 +187,7 @@ export class DLActorGenerator extends FormApplication {
       await this.rollFear(html);
       await this.rollSanity(html);
       await this.rollBody(html);
+      await this.rollPotential(html);
       await this.rollCredits(html);
       await this.rollPatch(html);
       await this.rollTrinket(html);
@@ -622,6 +628,9 @@ export class DLActorGenerator extends FormApplication {
       html.find(`img[id="system.stats.body.value"]`).click(ev => {
          this.rollBody(html)
       });
+      html.find(`img[id="system.stats.potential.value"]`).click(ev => {
+         this.rollPotential(html)
+      });
 
       /** credits */
 
@@ -699,6 +708,8 @@ export class DLActorGenerator extends FormApplication {
          "system.stats.sanity.value": formData["system.stats.sanity.value"] + (formData["system.stats.sanity.bonus"] || 0),
          "system.stats.fear.value": formData["system.stats.fear.value"] + (formData["system.stats.fear.bonus"] || 0),
          "system.stats.body.value": formData["system.stats.body.value"] + (formData["system.stats.body.bonus"] || 0),
+         "system.stats.potential.value": formData["system.stats.potential.value"] + (formData["system.stats.potential.bonus"] || 0),
+         "system.stats.potential.max": formData["system.stats.potential.value"] + (formData["system.stats.potential.bonus"] || 0),
       }
       if (formData["system.stats.max_wounds.bonus"]) {
          //max_wounds represent the bonus, so an android get 1 fro a total of 3 (2+1),

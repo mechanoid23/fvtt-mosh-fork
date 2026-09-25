@@ -51,6 +51,7 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
         sanity:    statField("Sanity",    "Sanity Save"),
         fear:      statField("Fear",      "Fear Save"),
         body:      statField("Body",      "Body Save"),
+        potential: statField("Potential", "Potential Save"),
         armor:     statField("Armor",     "Armor Save", {
           damageReduction: new fields.NumberField({ initial: 0 }),
           cover:           new fields.StringField({ initial: "none" }),
