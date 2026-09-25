@@ -1357,10 +1357,8 @@ export class MothershipActor extends Actor {
       if (weapon.system.useAmmo === true) {
         //if the weapon has enough shots remaining to shoot
         if (weapon.system.curShots >= weapon.system.shotsPerFire) {
-          //reduce shots by shotsPerFire
-          weapon.system.curShots -= weapon.system.shotsPerFire;
-          //update players weapon
-          this.updateEmbeddedDocuments('Item', [weapon]);
+          //reduce shots by shotsPerFire and persist
+          this.updateEmbeddedDocuments('Item', [{ _id: weapon._id, 'system.curShots': weapon.system.curShots - weapon.system.shotsPerFire }]);
         //if the weapon doesn't have enough shots remaining to shoot
         } else {
           //if the weapon has enough ammo remaining to shoot
@@ -2457,19 +2455,10 @@ export class MothershipActor extends Actor {
         //exit function
         return;
       } else {
-        //put curShots back into the ammo pool
-        item.system.ammo += item.system.curShots;
-        //figure out how much we can reload (full shots, or less if we don't have enough ammo)
-        let reloadAmount = Math.min(item.system.ammo, item.system.shots);
-        //reload the weapon
-          //set curShots to reload amount
-          item.system.curShots = reloadAmount;
-          //remove reload amount from ammo
-          item.system.ammo -= reloadAmount;
-        //update the item
-
-
-        this.updateEmbeddedDocuments('Item', [item]);
+        //put curShots back into the ammo pool, figure out reload amount, and persist
+        const pooledAmmo = item.system.ammo + item.system.curShots;
+        const reloadAmount = Math.min(pooledAmmo, item.system.shots);
+        this.updateEmbeddedDocuments('Item', [{ _id: item._id, 'system.curShots': reloadAmount, 'system.ammo': pooledAmmo - reloadAmount }]);
 
         
         //set message body text
