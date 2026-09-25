@@ -43,10 +43,24 @@ export class ShipData extends foundry.abstract.TypeDataModel {
         bankruptcy: statField("Bankruptcy", "Bankruptcy Save"),
       }),
 
-      // ObjectField used for both because their keys contain hyphens,
+      // ObjectField used for both because their keys contain hyphens (warp-cores, escape-pods),
       // which are not valid JS identifiers in typed SchemaField definitions.
-      supplies:         new fields.ObjectField(),
-      "weapon-stats":   new fields.ObjectField(),
+      // initial() is a function to avoid shared-reference bugs across actor instances.
+      supplies: new fields.ObjectField({ initial: () => ({
+        hull:          { value: 0, max: 0 },
+        fuel:          { value: 0, max: 0 },
+        stock:         { value: 0, max: 0 },
+        crew:          { value: 0, max: 0 },
+        upgrades:      { value: 0, max: 0 },
+        "warp-cores":  { value: 0 },
+        cryopods:      { value: 0 },
+        "escape-pods": { value: 0 },
+      }) }),
+      "weapon-stats": new fields.ObjectField({ initial: () => ({
+        weapons:    { value: 0, max: 0 },
+        megadamage: { value: "", max: "" },
+        hardpoints: { value: 0, max: 0 },
+      }) }),
     };
   }
 }
