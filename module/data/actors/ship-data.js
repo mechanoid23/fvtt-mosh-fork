@@ -63,4 +63,21 @@ export class ShipData extends foundry.abstract.TypeDataModel {
       }) }),
     };
   }
+
+  prepareDerivedData() {
+    const s = this.supplies;
+    s.hull          ??= { value: 0, max: 0 };
+    s.fuel          ??= { value: 0, max: 0 };
+    s.stock         ??= { value: 0, max: 0 };
+    s.crew          ??= { value: 0, max: 0 };
+    s.upgrades      ??= { value: 0, max: 0 };
+    s.cryopods      ??= { value: 0 };
+    s["warp-cores"]  ??= { value: 0 };
+    s["escape-pods"] ??= { value: 0 };
+
+    const ws = this["weapon-stats"];
+    ws.weapons    ??= { value: 0, max: 0 };
+    ws.megadamage ??= { value: "", max: "" };
+    ws.hardpoints ??= { value: 0, max: 0 };
+  }
 }
