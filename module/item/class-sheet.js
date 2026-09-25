@@ -36,10 +36,12 @@ export class MothershipClassSheet extends MothershipItemSheet {
     console.log(data.system.selected_adjustment.choose_skill_or);
     let choose_skill_or = data.system.selected_adjustment.choose_skill_or;
     for (const [ig, group] of choose_skill_or.entries()){
-      for (const [io, option] of group.entries()){
+      const groupArr = Array.isArray(group) ? group : Object.values(group);
+      for (const [io, option] of groupArr.entries()){
         let names = [];
         data.system.selected_adjustment.choose_skill_or[ig][io].from_list_names = [];
-        for(const [is,  skill] of option.from_list.entries()){
+        const fromList = Array.isArray(option.from_list) ? option.from_list : Object.values(option.from_list);
+        for(const [is, skill] of fromList.entries()){
           names.push((await fromUuid(skill)).name);
         }
         data.system.selected_adjustment.choose_skill_or[ig][io].from_list_names = names;
