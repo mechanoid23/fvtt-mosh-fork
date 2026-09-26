@@ -99,6 +99,7 @@ export class MothershipActorSheet extends foundry.appv1.sheets.ActorSheet {
     // Initialize containers.
     const gear = [];
     const skills = [];
+    const abilities = [];
     const weapons = [];
     const armors = [];
     const conditions = [];
@@ -115,6 +116,8 @@ export class MothershipActorSheet extends foundry.appv1.sheets.ActorSheet {
         curWeight += item.weight * item.quantity;
       } else if (i.type === 'skill') {
         skills.push(i);
+      } else if (i.type === 'ability') {
+        abilities.push(i);
       } else if (i.type === 'armor') {
         armors.push(i);
         curWeight += item.weight;
@@ -167,9 +170,13 @@ export class MothershipActorSheet extends foundry.appv1.sheets.ActorSheet {
     actorData.system.weight.current = curWeight;
     //console.log("Current Weight: " + curWeight + " Capacity: " + actorData.data.weight.capacity);
 
+    const psionicClasses = ['Psychic', 'Emissary'];
+    actorData.system.hasPsionics = psionicClasses.includes(actorData.system.class?.value);
+
     // Assign and return
     actorData.gear = gear;
     actorData.skills = skills;
+    actorData.abilities = abilities;
     actorData.armors = armors;
     actorData.weapons = weapons;
     actorData.conditions = conditions;

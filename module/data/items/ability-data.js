@@ -5,8 +5,9 @@ export class AbilityData extends foundry.abstract.TypeDataModel {
     const fields = foundry.data.fields;
     return {
       ...sharedItemFields(fields),
-      text: new fields.StringField({ initial: "An Ability" }),
-      roll: new fields.StringField({ initial: "" }),
+      rank:             new fields.StringField({ initial: "Trained" }),
+      bonus:            new fields.NumberField({ initial: 10 }),
+      prerequisite_ids: new fields.ArrayField(new fields.StringField()),
     };
   }
 }
