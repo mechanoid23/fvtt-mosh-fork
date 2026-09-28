@@ -375,6 +375,7 @@ export class DLActorGenerator extends FormApplication {
     * @returns 
     */
    async showOptionsDialog(list_option_skills_or) {
+      if (!Array.isArray(list_option_skills_or)) list_option_skills_or = Object.values(list_option_skills_or);
       let popupData = {options:list_option_skills_or};
 
       let popUpContent = await foundry.applications.handlebars.renderTemplate("systems/mosh/templates/dialogs/actor-generator/actor-generator-skill-option-choice-dialog.html", popupData);
@@ -432,6 +433,7 @@ export class DLActorGenerator extends FormApplication {
       let list_option_skills_or = classObject.system.selected_adjustment.choose_skill_or;
       for (let i = 0; i<list_option_skills_or.length;i++){
          let options_skill_or = list_option_skills_or[i];
+         if (!Array.isArray(options_skill_or)) options_skill_or = Object.values(options_skill_or);
          if(options_skill_or.length == 0){
             break;//empty list of options
          }
