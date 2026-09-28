@@ -1,3 +1,5 @@
+**Install in Foundry VTT:** `https://raw.githubusercontent.com/mechanoid23/fvtt-mosh-fork/master/system.json`
+
 ## MoSh | Unofficial Mothership RPG
 
 An unofficial implementation of Tuesday Knight's Mothership role playing system. Mothership is the property of Tuesday Knight Games, and can be purchased at https://mothershiprpg.com/
