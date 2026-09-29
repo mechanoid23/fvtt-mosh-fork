@@ -326,7 +326,8 @@
           </div>	
         </div>
 
-        <!-- Potential -->
+        <!-- Potential (Psychic/Emissary only) -->
+        {{#if system.hasPsionics}}
         <div class="resource flex-group-center">
           <span class="ability-mod stat-roll rollable savetext" data-roll="d100" data-key="potential" data-target="{{system.stats.potential.value}}" data-label="{{ localize 'Mosh.Potential' }}">{{ localize 'Mosh.Potential' }}</span>
           <div class="grid grid-3col" style="grid-template-columns: 44px 14px 44px; margin-left:6px;">
@@ -335,6 +336,7 @@
             <input class="square-input" type="text" name="system.stats.potential.max" value="{{system.stats.potential.max}}" data-dtype="Number" title="Max Potential" />
           </div>
         </div>
+        {{/if}}
 
         {{#unless system.settings.firstEdition}}
         <!-- Armor -->
