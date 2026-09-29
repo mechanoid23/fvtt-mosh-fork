@@ -33,7 +33,7 @@ export class ClassData extends foundry.abstract.TypeDataModel {
           master:           new fields.NumberField({ initial: 0 }),
           master_full_set:  new fields.NumberField({ initial: 0 }),
         }),
-        choose_skill_or: new fields.ArrayField(new fields.ObjectField()),
+        choose_skill_or: new fields.ArrayField(new fields.ArrayField(new fields.ObjectField())),
       }),
 
       roll_tables: new fields.SchemaField({
