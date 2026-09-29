@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-A fork of the unofficial FoundryVTT game system for the Mothership RPG (by Tuesday Knight Games), maintained at `mechanoid23/fvtt-mosh-fork`. Supports both 0th edition (0e) and 1st edition (1e) rules. The system ID is `mosh-fork` (distinct from the upstream `mosh` so both can be installed in Foundry simultaneously).
+A fork of the unofficial FoundryVTT game system for the Mothership RPG (by Tuesday Knight Games), maintained at `mechanoid23/fvtt-mosh-fork`. Supports both 0th edition (0e) and 1st edition (1e) rules. The system ID is `mosh` (reverted from `mosh-fork` for module compatibility).
 
 ## Build commands
 
@@ -85,6 +85,26 @@ Each item/actor type has a `*Data` class in `module/data/items/` or `module/data
 
 **Critical schema gotcha — `choose_skill_or`**: The raw DB stores this as `Array<Array<Object>>` (array of option groups, each group being an array of option objects). The schema must be `ArrayField(ArrayField(ObjectField()))`. Using `ArrayField(ObjectField())` causes Foundry to corrupt the inner arrays — only the first option in each group will be available.
 
+**Critical gotcha — TypeDataModel property mutation does not persist**: Never mutate `item.system.field` directly and then pass the document to `updateEmbeddedDocuments`. In Foundry v13, TypeDataModel properties are backed by `_source`; direct assignment writes to the prepared data layer only and is discarded on the next prepare cycle. Always use an explicit delta object:
+```js
+// Wrong — mutation is lost
+weapon.system.curShots -= weapon.system.shotsPerFire;
+this.updateEmbeddedDocuments('Item', [weapon]);
+
+// Correct
+this.updateEmbeddedDocuments('Item', [{ _id: weapon._id, 'system.curShots': weapon.system.curShots - weapon.system.shotsPerFire }]);
+```
+
+**Critical gotcha — `ObjectField` `initial` is ignored for stored data**: Setting `initial: () => ({...})` on an `ObjectField` only applies when no value exists in the source at all. If the stored document has `supplies: {}`, Foundry treats `{}` as valid and never applies the initial. Use `prepareDerivedData()` on the DataModel class to guarantee sub-keys are present:
+```js
+prepareDerivedData() {
+  this.supplies.hull ??= { value: 0, max: 0 };
+  // etc.
+}
+```
+
+**Critical gotcha — duplicate `name` attributes corrupt form data**: Two `<input name="system.foo.bar">` elements in the same Foundry sheet form cause Foundry to serialize the value as an array, which stringifies to `"val1,val2"` and corrupts on subsequent saves. Always ensure each field name appears exactly once per form.
+
 ### Psionics tab
 
 `module/actor/actor-sheet.js` — `_prepareCharacterItems()` separates `type === "ability"` items into an `abilities` array and sets `actorData.system.hasPsionics = true` when the character's class is `"Psychic"` or `"Emissary"`. The character sheet template (`templates/actor/actor-sheet.html`) conditionally renders a Psionics tab when `system.hasPsionics` is set.
@@ -97,7 +117,7 @@ Each item/actor type has a `*Data` class in `module/data/items/` or `module/data
 
 ## Fork-specific conventions
 
-- **System ID**: `mosh-fork` — used in `registerSheet`, `game.settings.get/register`, pack `system` fields, and `Compendium.mosh-fork.*` references. Do NOT change CSS class names in `defaultOptions.classes` — those stay as `"mosh"` to match the compiled CSS in `css/mosh.css`.
+- **System ID**: `mosh` — used in `registerSheet`, `game.settings.get/register`, pack `system` fields, and `Compendium.mosh.*` references. Do NOT change CSS class names in `defaultOptions.classes` — those stay as `"mosh"` to match the compiled CSS in `css/mosh.css`.
 - **CSS classes**: Sheet `defaultOptions.classes` arrays use `"mosh"` (not `"mosh-fork"`) as the first class. The compiled CSS targets `.mosh`. Do not rename these.
 - **getData() pattern**: Sheet `getData()` calls `super.getData()`, works on `data.data.*`, and returns `data.data`. The Handlebars template context is `data.data`.
 
