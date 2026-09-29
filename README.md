@@ -1,8 +1,16 @@
 **Install in Foundry VTT:** `https://raw.githubusercontent.com/mechanoid23/fvtt-mosh-fork/master/system.json`
 
+> This is a maintained fork by mechanoid23. It adds homebrew class support, a Psionics tab, and TypeDataModel-based data validation on top of the upstream unofficial mosh system.
+
 ## MoSh | Unofficial Mothership RPG
 
 An unofficial implementation of Tuesday Knight's Mothership role playing system. Mothership is the property of Tuesday Knight Games, and can be purchased at https://mothershiprpg.com/
+
+#### Fork additions (mechanoid23)
+- **Psionics tab** on the character sheet — visible only for Psychic and Emissary class characters; lists `ability`-type items (psionic powers from the RWC compendium) with rank and bonus
+- **TypeDataModel data layer** — replaces upstream `template.json` with explicit Foundry schema classes in `module/data/`, enabling proper field validation and type safety
+- **Vehicle actor type** — additional sheet and template for vehicle actors
+- **Potential stat** — character stat for potential rolls in the actor generator
 
 #### Features
 - Full 1e AND 0e system support with conditions, rolltables, and macros for each

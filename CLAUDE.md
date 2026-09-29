@@ -42,7 +42,7 @@ SCSS source lives in `scss/` and compiles to `css/mosh.css`. There is no JS buil
 - `module/windows/` — sub-windows/apps: creature settings, actor generator, rolltable config, ship deckplan, ship megadamage, ship macros, ship setup
 
 ### Data schema
-`template.json` defines the data model for all actor and item types. Key actor types:
+`module/data/` defines TypeDataModel classes for all actor and item types, replacing the upstream `template.json`. Registered in `module/mosh.js` via `CONFIG.Actor.dataModels` and `CONFIG.Item.dataModels`. Key actor types:
 - **character**: stats (strength, speed, intellect, combat, sanity, fear, body, armor), stress/calm, wounds (hits), health, skills, equipment
 - **creature**: configurable stats (combat, instinct, speed, loyalty, armor, sanity — each togglable via `enabled`)
 - **ship**: hull/fuel/stock/crew supplies, weapon hardpoints, megadamage system
@@ -73,9 +73,27 @@ The fork uses GitHub Releases for Foundry package distribution. To ship an updat
      --repo mechanoid23/fvtt-mosh-fork --title "fork_06"
    ```
 
+> **Important**: always name the zip `fvtt-mosh-fork.zip` (not `fvtt-mosh-fork-fork06.zip` or any other variant). The `"download"` URL in `system.json` hardcodes that exact filename — a mismatch causes a 404 when Foundry tries to install.
+
 The `"manifest"` URL points to `master/system.json` so Foundry always sees the latest version number and can detect updates. The `"download"` URL points to the specific release ZIP.
 
 Install/update in Foundry via: `https://raw.githubusercontent.com/mechanoid23/fvtt-mosh-fork/master/system.json`
+
+### TypeDataModel conventions (`module/data/`)
+
+Each item/actor type has a `*Data` class in `module/data/items/` or `module/data/actors/` that extends `foundry.abstract.TypeDataModel` and implements `static defineSchema()`. Exported from `index.js` and registered in `mosh.js`.
+
+**Critical schema gotcha — `choose_skill_or`**: The raw DB stores this as `Array<Array<Object>>` (array of option groups, each group being an array of option objects). The schema must be `ArrayField(ArrayField(ObjectField()))`. Using `ArrayField(ObjectField())` causes Foundry to corrupt the inner arrays — only the first option in each group will be available.
+
+### Psionics tab
+
+`module/actor/actor-sheet.js` — `_prepareCharacterItems()` separates `type === "ability"` items into an `abilities` array and sets `actorData.system.hasPsionics = true` when the character's class is `"Psychic"` or `"Emissary"`. The character sheet template (`templates/actor/actor-sheet.html`) conditionally renders a Psionics tab when `system.hasPsionics` is set.
+
+`type: "ability"` items use `module/data/items/ability-data.js` with fields: `rank` (StringField), `bonus` (NumberField), `prerequisite_ids` (ArrayField of StringField). These are the psionic powers from the RWC compendium (`fvtt_mosh_1e_rwc`).
+
+### Actor generator (`module/windows/actor-generator.js`)
+
+`applyClassSkills()` reads `classObject.system.selected_adjustment.choose_skill_or` and normalizes each group with `if (!Array.isArray(g)) g = Object.values(g)` as a defensive fallback (the TypeDataModel schema fix makes this a no-op, but it stays for safety). `showOptionsDialog()` uses `foundry.applications.api.DialogV2` with one button per option.
 
 ## Fork-specific conventions
 
