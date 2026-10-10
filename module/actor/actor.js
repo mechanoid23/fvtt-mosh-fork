@@ -1912,6 +1912,15 @@ export class MothershipActor extends Actor {
       //return [messageData];
   }
 
+  // Strip psionic abilities whenever max Potential reaches 0 by any means
+  async _onUpdate(data, options, userId) {
+    await super._onUpdate(data, options, userId);
+    if (foundry.utils.getProperty(data, 'system.stats.potential.max') === 0 && this.isOwner) {
+      const abilityIds = this.items.filter(i => i.type === 'ability').map(i => i.id);
+      if (abilityIds.length) await this.deleteEmbeddedDocuments('Item', abilityIds);
+    }
+  }
+
   // Psionic ability activation roll: d100 vs current Potential
   async rollPsionicAbility(itemId) {
     const item = this.items.get(itemId);
@@ -1919,6 +1928,17 @@ export class MothershipActor extends Actor {
 
     const potentialValue = Number(this.system.stats.potential?.value ?? 0);
     const potentialMax   = Number(this.system.stats.potential?.max   ?? 0);
+
+    // Block roll if current Potential is 0
+    if (potentialValue <= 0) {
+      await foundry.applications.api.DialogV2.wait({
+        window: { title: 'No Potential Remaining' },
+        content: `<p><strong>${this.name}</strong> has no current Potential and cannot use psionic abilities. Rest to recover Potential before attempting a check.</p>`,
+        buttons: [{ icon: 'fas fa-times', action: 'ok', label: 'Understood' }],
+        default: 'ok'
+      });
+      return;
+    }
 
     // Ask for advantage / normal / disadvantage
     const rollType = await foundry.applications.api.DialogV2.wait({
