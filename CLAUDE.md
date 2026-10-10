@@ -107,9 +107,34 @@ prepareDerivedData() {
 
 ### Psionics tab
 
-`module/actor/actor-sheet.js` — `_prepareCharacterItems()` separates `type === "ability"` items into an `abilities` array and sets `actorData.system.hasPsionics = true` when the character's class is `"Psychic"` or `"Emissary"`. The character sheet template (`templates/actor/actor-sheet.html`) conditionally renders a Psionics tab when `system.hasPsionics` is set.
+`module/actor/actor-sheet.js` — `_prepareCharacterItems()` separates `type === "ability"` items into a `data.data.abilities` array and sets `data.data.system.hasPsionics = true` when the character's class is `"Psychic"` or `"Emissary"`. The character sheet template (`templates/actor/actor-sheet.html`) conditionally renders a Psionics tab when `system.hasPsionics` is set.
 
 `type: "ability"` items use `module/data/items/ability-data.js` with fields: `rank` (StringField), `bonus` (NumberField), `prerequisite_ids` (ArrayField of StringField). These are the psionic powers from the RWC compendium (`fvtt_mosh_1e_rwc`).
+
+#### Psionic ability rolls (`rollPsionicAbility(itemId)` on `MothershipActor`)
+
+Clicking an ability name on the Psionics tab (CSS class `ability-roll`) triggers `actor.rollPsionicAbility(itemId)`. Flow:
+
+1. `DialogV2.wait()` prompts **Advantage / Normal / Disadvantage**.
+2. Rolls 1 or 2 d100s; converts 100 → 0. Advantage takes the lower die (better when rolling under); disadvantage takes the higher.
+3. Crits are doubles: `{0, 11, 22, 33, 44, 55, 66, 77, 88, 99}`.
+4. Success = `total < potential.value && total < 90`.
+5. All stat changes are applied in one `actor.update({})`:
+
+| Outcome | Condition | Effect |
+|---|---|---|
+| Success | not doubles, roll < Potential | `potential.value` − roll |
+| Critical Success | doubles + success | `potential.value` − roll; `potential.max` + 1d10 |
+| Failure | roll ≥ Potential or ≥ 90 | `potential.value` → 0; `stress.value` + 1 |
+| Critical Failure | doubles + failure | `potential.value` → 0; `potential.max` − 1d10; if max = 0, all `ability` items deleted |
+
+#### Cumulative descriptions (`_preparePsionicDescriptions(data)`)
+
+Called from `getData()` after `_prepareCharacterItems()` when `data.data.system.hasPsionics` is true and `data.data.abilities` is non-empty. Uses `DISCIPLINE_CHAINS` (10 disciplines × 3 rank IDs from `fvtt_mosh_1e_rwc.items_skills_1e`) to match each owned ability by name to its chain position. For rank II or III abilities, fetches lower-rank descriptions from the compendium and prepends them. Stores the result as `ability.cumulativeDescription` (HTML string); the template renders it with `{{{ability.cumulativeDescription}}}` below each ability row.
+
+**Critical gotcha — getData returns `data.data`**: `_prepareCharacterItems` stores abilities at `data.data.abilities`, not `data.abilities`. All code in `getData()` and `_preparePsionicDescriptions()` that accesses the abilities array must use `data.data.abilities`. Using `data.abilities` silently skips the descriptions entirely.
+
+The `DISCIPLINE_CHAINS` constant in `actor-sheet.js` must stay in sync with the compendium IDs in `fvtt_mosh_1e_rwc`.
 
 ### Actor generator (`module/windows/actor-generator.js`)
 

@@ -7,10 +7,12 @@
 An unofficial implementation of Tuesday Knight's Mothership role playing system. Mothership is the property of Tuesday Knight Games, and can be purchased at https://mothershiprpg.com/
 
 #### Fork additions (mechanoid23)
-- **Psionics tab** on the character sheet — visible only for Psychic and Emissary class characters; lists `ability`-type items (psionic powers from the RWC compendium) with rank and bonus
+- **Psionics tab** on the character sheet — visible only for Psychic and Emissary class characters; lists `ability`-type items (psionic powers from the RWC compendium) with rank, bonus, and cumulative descriptions
+- **Psionic ability rolls** — clicking an ability on the Psionics tab prompts for Advantage / Normal / Disadvantage, then rolls d100 vs current Potential. Outcomes: success drains Potential by the amount rolled; failure drains all Potential and adds 1 Stress; critical success increases max Potential by 1d10; critical failure decreases max Potential by 1d10 (reaching 0 removes all abilities permanently)
+- **Cumulative psionic descriptions** — a character with Pyrokinesis II sees the descriptions for both Pyrokinesis I and II on their sheet, fetched from the RWC compendium
 - **TypeDataModel data layer** — replaces upstream `template.json` with explicit Foundry schema classes in `module/data/`, enabling proper field validation and type safety
 - **Vehicle actor type** — additional sheet and template for vehicle actors
-- **Potential stat** — character stat for potential rolls in the actor generator
+- **Potential stat** — character stat tracked separately from other saves; rolled at class selection for Psychic and Emissary characters
 
 #### Features
 - Full 1e AND 0e system support with conditions, rolltables, and macros for each
