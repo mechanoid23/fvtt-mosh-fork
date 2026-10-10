@@ -603,7 +603,7 @@
         {{#each abilities as |ability id|}}
         <li class="item flexrow dropitem" data-item-id="{{ability._id}}">
           <div class="item-image"><img src="{{ability.img}}" title="{{ability.name}}" width="24" height="24"/></div>
-          <div class="skill-name skill-roll list-roll">{{ability.name}}</div>
+          <div class="skill-name ability-roll list-roll rollable" style="cursor:pointer">{{ability.name}}</div>
           <div class="skill-stat">{{ability.system.rank}}</div>
           <div class="skill-stat">{{ability.system.bonus}}</div>
           <div class="item-controls">

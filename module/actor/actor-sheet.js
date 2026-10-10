@@ -340,6 +340,12 @@ export class MothershipActorSheet extends foundry.appv1.sheets.ActorSheet {
       this.actor.rollCheck(null, null, null, item.name, item.system.bonus, null);
     });
 
+    // Psionic Ability roll
+    html.find('.ability-roll').click(ev => {
+      const li = ev.currentTarget.closest(".item");
+      this.actor.rollPsionicAbility(li.dataset.itemId);
+    });
+
     // Rollable Weapon
     html.find('.weapon-roll').click(ev => {
       const li = ev.currentTarget.closest(".item");

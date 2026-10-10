@@ -1912,6 +1912,76 @@ export class MothershipActor extends Actor {
       //return [messageData];
   }
 
+  // Psionic ability activation roll: d100 vs current Potential
+  async rollPsionicAbility(itemId) {
+    const item = this.items.get(itemId);
+    if (!item) return;
+
+    const potentialValue = Number(this.system.stats.potential?.value ?? 0);
+    const potentialMax   = Number(this.system.stats.potential?.max   ?? 0);
+
+    const roll = await new Roll('1d100').evaluate();
+    const total = roll.total;
+
+    const DOUBLES = new Set([0, 11, 22, 33, 44, 55, 66, 77, 88, 99]);
+    const isCrit    = DOUBLES.has(total);
+    const isSuccess = total < potentialValue && total < 90;
+
+    let outcome = '';
+    let detail  = '';
+    const updates = {};
+
+    if (isCrit && isSuccess) {
+      // Critical success: works better, max Potential +1d10
+      const bonusRoll = await new Roll('1d10').evaluate();
+      const bonus = bonusRoll.total;
+      updates['system.stats.potential.max'] = potentialMax + bonus;
+      updates['system.stats.potential.value'] = Math.max(0, potentialValue - total);
+      outcome = 'CRITICAL SUCCESS';
+      detail  = `${item.name} works better than expected. Potential reduced by ${total} (to ${Math.max(0, potentialValue - total)}). Max Potential increased by ${bonus} (to ${potentialMax + bonus}).`;
+    } else if (!isCrit && isSuccess) {
+      // Normal success: works, Potential reduced by roll amount
+      const newValue = Math.max(0, potentialValue - total);
+      updates['system.stats.potential.value'] = newValue;
+      outcome = 'SUCCESS';
+      detail  = `${item.name} works as planned. Potential reduced by ${total} (to ${newValue}).`;
+    } else if (isCrit && !isSuccess) {
+      // Critical failure: catastrophic, max Potential -1d10
+      const penaltyRoll = await new Roll('1d10').evaluate();
+      const penalty = penaltyRoll.total;
+      const newMax = Math.max(0, potentialMax - penalty);
+      updates['system.stats.potential.max']   = newMax;
+      updates['system.stats.potential.value'] = 0;
+      if (newMax === 0) {
+        detail = `${item.name} goes catastrophically wrong. Max Potential decreased by ${penalty} — reaching 0. All psychic capabilities are lost forever.`;
+        // Remove all abilities if max reaches 0
+        const abilityIds = this.items.filter(i => i.type === 'ability').map(i => i.id);
+        if (abilityIds.length) await this.deleteEmbeddedDocuments('Item', abilityIds);
+      } else {
+        detail = `${item.name} goes catastrophically wrong. All Potential drained. Max Potential decreased by ${penalty} (to ${newMax}).`;
+      }
+      outcome = 'CRITICAL FAILURE';
+    } else {
+      // Normal failure: works but gain 1 Stress, all Potential drained
+      updates['system.stats.potential.value'] = 0;
+      const currentStress = Number(this.system.other?.stress?.value ?? 0);
+      updates['system.other.stress.value'] = currentStress + 1;
+      outcome = 'FAILURE';
+      detail  = `${item.name} works but you over-extend: all Potential drained and +1 Stress (now ${currentStress + 1}).`;
+    }
+
+    await this.update(updates);
+
+    await roll.toMessage({
+      speaker: ChatMessage.getSpeaker({ actor: this }),
+      flavor: `
+        <strong>${item.name}</strong> — Psionics Roll (vs Potential ${potentialValue})<br>
+        <span style="font-size:1.1em"><strong>${outcome}</strong></span><br>
+        <em>${detail}</em>
+      `
+    });
+  }
+
   //central function to modify actors | TAKES 'system.other.stress.value',-1,'-1d5',true | RETURNS change details, and optional chat message
   async modifyActor(fieldAddress, modValue, modRollString, outputChatMsg) {
     //init vars
