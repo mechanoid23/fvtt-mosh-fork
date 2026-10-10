@@ -37,7 +37,7 @@ export class MothershipActorSheet extends foundry.appv1.sheets.ActorSheet {
       this._prepareCharacterItems(data);
     }
 
-    if (data.data.system.hasPsionics && data.abilities?.length) {
+    if (data.data.system.hasPsionics && data.data.abilities?.length) {
       await this._preparePsionicDescriptions(data);
     }
 
@@ -203,7 +203,7 @@ export class MothershipActorSheet extends foundry.appv1.sheets.ActorSheet {
     const pack = game.packs.get("fvtt_mosh_1e_rwc.items_skills_1e");
     if (pack) await pack.getIndex();
 
-    for (const ability of data.abilities) {
+    for (const ability of data.data.abilities) {
       let disc = null;
       let pos  = -1;
       for (const d of DISCIPLINE_CHAINS) {
