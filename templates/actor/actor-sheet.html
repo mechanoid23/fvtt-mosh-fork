@@ -611,6 +611,11 @@
             <a class="item-control item-delete" title="{{ localize 'Mosh.DeleteSkill' }}"><i class="fas fa-trash"></i></a>
           </div>
         </li>
+        {{#if ability.cumulativeDescription}}
+        <li class="item" style="padding: 2px 4px 6px 36px; font-size: 0.85em; color: #555; border-top: none;">
+          {{{ability.cumulativeDescription}}}
+        </li>
+        {{/if}}
         {{/each}}
       </ol>
     </div>

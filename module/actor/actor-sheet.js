@@ -37,6 +37,9 @@ export class MothershipActorSheet extends foundry.appv1.sheets.ActorSheet {
       this._prepareCharacterItems(data);
     }
 
+    if (data.data.system.hasPsionics && data.abilities?.length) {
+      await this._preparePsionicDescriptions(data);
+    }
 
     if (data.data.system.settings == null) {
       data.data.system.settings = {};
@@ -181,6 +184,53 @@ export class MothershipActorSheet extends foundry.appv1.sheets.ActorSheet {
     actorData.weapons = weapons;
     actorData.conditions = conditions;
 
+  }
+
+  async _preparePsionicDescriptions(data) {
+    const DISCIPLINE_CHAINS = [
+      { name: "Astral Projection", ids: ["NbrnTP3fAbnFbmOH","nKYaXRvj7uff0LYT","H8xIZM1JRcoreogr"] },
+      { name: "Clairvoyance Roll", ids: ["Nwwmq6OLkTkx9NIQ","0Wobtqn62tOy4Cqp","IqK3yn9FfcgMXAdx"] },
+      { name: "Energy Healing",    ids: ["9G81aSQHqNgAC72q","Fl41sNLjVHWGaub5","2Ztd26fEeVVhDIq2"] },
+      { name: "Illusions",         ids: ["AnHTmt9OBGhnuKon","eNo41eoPni6JDWYl","gAACTP9gyv1plBAr"] },
+      { name: "Mind Control",      ids: ["p5B1Id9Z850kEnyd","x9qWCA79ISjs8JHU","dKF0j7elKPoh3pKM"] },
+      { name: "Photokinesis",      ids: ["zKG5mSoyPstUeC99","enq522wjZRL9OaYs","P6ihgIqLSmNqE40f"] },
+      { name: "Pyrokinesis",       ids: ["AraVNqTIAae24HZK","jht3X13npgW2zMj5","18Y2bTu5X1YqWg21"] },
+      { name: "Telekinesis",       ids: ["nYCsXoblu17rNy8H","6h8l7qgATtLFxJpR","a5HSUPwePut0Sstz"] },
+      { name: "Telepathy",         ids: ["yshA6P3MsHarAJOC","BnD3XkfFNuYUPnmb","pD0ezNmREpOaUVgA"] },
+      { name: "Teleportation",     ids: ["k7Gdp0CXP9K63LSF","ZH3UDqpNVGMrerqt","HioRRdzHzmA4KR1V"] },
+    ];
+    const RANKS = [" I", " II", " III"];
+    const pack = game.packs.get("fvtt_mosh_1e_rwc.items_skills_1e");
+    if (pack) await pack.getIndex();
+
+    for (const ability of data.abilities) {
+      let disc = null;
+      let pos  = -1;
+      for (const d of DISCIPLINE_CHAINS) {
+        for (let i = 0; i < RANKS.length; i++) {
+          if (ability.name === d.name + RANKS[i]) { disc = d; pos = i; break; }
+        }
+        if (disc) break;
+      }
+      if (!disc || pos < 0) continue;
+
+      const descParts = [];
+      for (let i = 0; i <= pos; i++) {
+        const rankLabel = disc.name + RANKS[i];
+        let desc = '';
+        if (i === pos) {
+          // owned item — description already present
+          desc = ability.system.description || '';
+        } else if (pack) {
+          try {
+            const doc = await pack.getDocument(disc.ids[i]);
+            desc = doc?.system?.description || '';
+          } catch(e) { /* compendium not available */ }
+        }
+        if (desc) descParts.push(`<p><strong>${rankLabel}:</strong> ${desc.replace(/^<p>|<\/p>$/g,'')}</p>`);
+      }
+      ability.cumulativeDescription = descParts.join('');
+    }
   }
 
   /** @override */

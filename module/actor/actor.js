@@ -1920,10 +1920,36 @@ export class MothershipActor extends Actor {
     const potentialValue = Number(this.system.stats.potential?.value ?? 0);
     const potentialMax   = Number(this.system.stats.potential?.max   ?? 0);
 
-    const roll = await new Roll('1d100').evaluate();
-    const total = roll.total;
+    // Ask for advantage / normal / disadvantage
+    const rollType = await foundry.applications.api.DialogV2.wait({
+      window: { title: `${item.name} — Psionics Roll` },
+      content: `<p>Roll <strong>${item.name}</strong> vs Potential <strong>${potentialValue}</strong>.</p>`,
+      buttons: [
+        { icon: 'fas fa-angle-double-up',   action: 'advantage',    label: 'Advantage' },
+        { icon: 'fas fa-circle',            action: 'normal',       label: 'Normal' },
+        { icon: 'fas fa-angle-double-down', action: 'disadvantage', label: 'Disadvantage' },
+      ],
+      default: 'normal'
+    });
+    if (!rollType) return;
 
+    // Roll 1 or 2 d100s, convert 100→0, select based on roll type
     const DOUBLES = new Set([0, 11, 22, 33, 44, 55, 66, 77, 88, 99]);
+    const rollD100 = async () => { const r = await new Roll('1d100').evaluate(); return r.total === 100 ? 0 : r.total; };
+
+    const dieA = await rollD100();
+    let dieB = null;
+    let total;
+    if (rollType === 'advantage') {
+      dieB  = await rollD100();
+      total = Math.min(dieA, dieB);
+    } else if (rollType === 'disadvantage') {
+      dieB  = await rollD100();
+      total = Math.max(dieA, dieB);
+    } else {
+      total = dieA;
+    }
+
     const isCrit    = DOUBLES.has(total);
     const isSuccess = total < potentialValue && total < 90;
 
@@ -1932,37 +1958,33 @@ export class MothershipActor extends Actor {
     const updates = {};
 
     if (isCrit && isSuccess) {
-      // Critical success: works better, max Potential +1d10
       const bonusRoll = await new Roll('1d10').evaluate();
-      const bonus = bonusRoll.total;
-      updates['system.stats.potential.max'] = potentialMax + bonus;
-      updates['system.stats.potential.value'] = Math.max(0, potentialValue - total);
+      const bonus = bonusRoll.total === 10 ? 0 : bonusRoll.total;
+      const newPotValue = Math.max(0, potentialValue - total);
+      updates['system.stats.potential.max']   = potentialMax + bonus;
+      updates['system.stats.potential.value'] = newPotValue;
       outcome = 'CRITICAL SUCCESS';
-      detail  = `${item.name} works better than expected. Potential reduced by ${total} (to ${Math.max(0, potentialValue - total)}). Max Potential increased by ${bonus} (to ${potentialMax + bonus}).`;
+      detail  = `${item.name} works better than expected. Potential reduced by ${total} (to ${newPotValue}). Max Potential +${bonus} (now ${potentialMax + bonus}).`;
     } else if (!isCrit && isSuccess) {
-      // Normal success: works, Potential reduced by roll amount
       const newValue = Math.max(0, potentialValue - total);
       updates['system.stats.potential.value'] = newValue;
       outcome = 'SUCCESS';
       detail  = `${item.name} works as planned. Potential reduced by ${total} (to ${newValue}).`;
     } else if (isCrit && !isSuccess) {
-      // Critical failure: catastrophic, max Potential -1d10
       const penaltyRoll = await new Roll('1d10').evaluate();
-      const penalty = penaltyRoll.total;
+      const penalty = penaltyRoll.total === 10 ? 0 : penaltyRoll.total;
       const newMax = Math.max(0, potentialMax - penalty);
       updates['system.stats.potential.max']   = newMax;
       updates['system.stats.potential.value'] = 0;
+      outcome = 'CRITICAL FAILURE';
       if (newMax === 0) {
-        detail = `${item.name} goes catastrophically wrong. Max Potential decreased by ${penalty} — reaching 0. All psychic capabilities are lost forever.`;
-        // Remove all abilities if max reaches 0
+        detail = `${item.name} goes catastrophically wrong. Max Potential −${penalty} — reaching 0. All psychic capabilities are lost forever.`;
         const abilityIds = this.items.filter(i => i.type === 'ability').map(i => i.id);
         if (abilityIds.length) await this.deleteEmbeddedDocuments('Item', abilityIds);
       } else {
-        detail = `${item.name} goes catastrophically wrong. All Potential drained. Max Potential decreased by ${penalty} (to ${newMax}).`;
+        detail = `${item.name} goes catastrophically wrong. All Potential drained. Max Potential −${penalty} (now ${newMax}).`;
       }
-      outcome = 'CRITICAL FAILURE';
     } else {
-      // Normal failure: works but gain 1 Stress, all Potential drained
       updates['system.stats.potential.value'] = 0;
       const currentStress = Number(this.system.other?.stress?.value ?? 0);
       updates['system.other.stress.value'] = currentStress + 1;
@@ -1972,12 +1994,22 @@ export class MothershipActor extends Actor {
 
     await this.update(updates);
 
-    await roll.toMessage({
+    const diceDisplay = dieB !== null
+      ? `Rolled: ${dieA} &amp; ${dieB} → <strong>${total}</strong> (${rollType})`
+      : `Rolled: <strong>${total}</strong>`;
+
+    await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor: this }),
-      flavor: `
-        <strong>${item.name}</strong> — Psionics Roll (vs Potential ${potentialValue})<br>
-        <span style="font-size:1.1em"><strong>${outcome}</strong></span><br>
-        <em>${detail}</em>
+      content: `
+        <div class="dice-roll">
+          <div class="dice-result">
+            <div class="dice-formula">${item.name} — Psionics (vs ${potentialValue})</div>
+            <div class="dice-tooltip">${diceDisplay}</div>
+            <h4 class="dice-total">${total}</h4>
+          </div>
+        </div>
+        <p><strong>${outcome}</strong></p>
+        <p><em>${detail}</em></p>
       `
     });
   }
