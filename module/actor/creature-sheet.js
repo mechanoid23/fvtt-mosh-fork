@@ -87,7 +87,8 @@ export class MothershipCreatureSheet extends foundry.appv1.sheets.ActorSheet {
         data.data.enriched = [];
         data.data.enriched.description = await foundry.applications.ux.TextEditor.implementation.enrichHTML(data.data.system.description, {async: true});
         data.data.enriched.biography = await foundry.applications.ux.TextEditor.implementation.enrichHTML(data.data.system.biography, {async: true});
-        
+        data.data.enriched.notes = await foundry.applications.ux.TextEditor.implementation.enrichHTML(data.data.system.notes, {async: true});
+
         //SKILL XP BUTTONS
         superData.xp.html = '';
         if (superData.xp.html == '') {
