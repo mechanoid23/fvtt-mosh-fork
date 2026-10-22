@@ -63,8 +63,8 @@ export class MothershipActor extends Actor {
     const system = this.system;
     //armor points + damage reduction
       //init vars
-      let armorPoints = 0;
-      let damageReduction = 0;
+      let armorPoints = Number(system.stats.armor.baseAP ?? 0); // natural AP
+      let damageReduction = Number(system.stats.armor.baseDR ?? 0); // natural DR
       //count values
       for (const armor of this.items.filter(i => i.type === "armor")) {
         if (armor.system?.equipped) {
@@ -73,6 +73,8 @@ export class MothershipActor extends Actor {
         }
       }
       //set values
+      system.stats.armor.itemAP = armorPoints - Number(system.stats.armor.baseAP ?? 0);
+      system.stats.armor.itemDR = damageReduction - Number(system.stats.armor.baseDR ?? 0);
       system.stats.armor.mod = armorPoints;
       system.stats.armor.total = armorPoints + Number(system.stats.armor.value ?? 0);
       system.stats.armor.damageReduction = damageReduction;

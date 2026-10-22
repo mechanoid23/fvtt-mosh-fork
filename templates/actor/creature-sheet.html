@@ -139,7 +139,8 @@
           <label for="system.stats.armor.value" class="resource-label minmaxtext rollable armor-roll">{{ localize 'Mosh.Armor' }}</label>
           <div class="minmaxwrapper" style="width: 100%; background: black; border-radius: 0.3em;">
             <div class="maxhealth-input" style="display: flex;">
-              <div class="whiteText" type="text" data-dtype="Number">{{system.stats.armor.mod}}</div>
+              <input class="whiteText" type="text" name="system.stats.armor.baseAP" value="{{system.stats.armor.baseAP}}" data-dtype="Number" title="Natural AP (equipped armor adds to this: total {{system.stats.armor.mod}})" />
+              {{#if system.stats.armor.itemAP}}<div class="highlightText" style="font-size: 0.8rem;">&nbsp;+{{system.stats.armor.itemAP}}</div>{{/if}}
               {{#if (compare 'str' system.stats.armor.cover '===' 'insignificant')}}
               <div class="highlightText" type="text" data-dtype="Number" style="font-size: 0.8rem;">&nbsp;5</div>
               {{/if}}
@@ -152,7 +153,8 @@
             </div>
             <div class="slant" style="border-right: 2px solid #ffffff; transform: skewX(0deg);"></div>
             <div class="maxhealth-input" style="display: flex;">
-              <div class="whiteText" type="text" data-dtype="Number">{{system.stats.armor.damageReduction}}</div>
+              <input class="whiteText" type="text" name="system.stats.armor.baseDR" value="{{system.stats.armor.baseDR}}" data-dtype="Number" title="Natural DR (equipped armor adds to this: total {{system.stats.armor.damageReduction}})" />
+              {{#if system.stats.armor.itemDR}}<div class="highlightText" style="font-size: 0.8rem;">&nbsp;+{{system.stats.armor.itemDR}}</div>{{/if}}
               {{#if (compare 'str' system.stats.armor.cover '===' 'heavy')}}
               <div class="highlightText" type="text" data-dtype="Number" style="font-size: 0.8rem;">&nbsp;5</div>
               {{/if}}

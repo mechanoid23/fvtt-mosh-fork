@@ -32,6 +32,10 @@ export class CreatureData extends foundry.abstract.TypeDataModel {
         speed:    statField("Speed",    "Speed Check",    false),
         loyalty:  statField("Loyalty",  "Loyalty Check",  false),
         armor:    statField("Armor",    "Armor Save",     false, {
+          baseAP:          new fields.NumberField({ initial: 0 }),
+          baseDR:          new fields.NumberField({ initial: 0 }),
+          itemAP:          new fields.NumberField({ initial: 0 }),
+          itemDR:          new fields.NumberField({ initial: 0 }),
           mod:             new fields.NumberField({ initial: 0 }),
           damageReduction: new fields.NumberField({ initial: 0 }),
           cover:           new fields.StringField({ initial: "none" }),
