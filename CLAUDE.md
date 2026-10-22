@@ -45,6 +45,7 @@ SCSS source lives in `scss/` and compiles to `css/mosh.css`. There is no JS buil
 `module/data/` defines TypeDataModel classes for all actor and item types, replacing the upstream `template.json`. Registered in `module/mosh.js` via `CONFIG.Actor.dataModels` and `CONFIG.Item.dataModels`. Key actor types:
 - **character**: stats (strength, speed, intellect, combat, sanity, fear, body, armor), stress/calm, wounds (hits), health, skills, equipment
 - **creature**: configurable stats (combat, instinct, speed, loyalty, armor, sanity — each togglable via `enabled`)
+  - Creature `stats.armor` has stored `baseAP` / `baseDR` (natural armor, editable on the sheet) and derived `itemAP` / `itemDR` (sum from equipped `armor` items). `_deriveCreature()` sets `mod` = `baseAP` + `itemAP` and `damageReduction` = `baseDR` + `itemDR`; `mod` and `damageReduction` are overwritten every prepare, so never bind inputs to them. Characters still derive purely from items.
 - **ship**: hull/fuel/stock/crew supplies, weapon hardpoints, megadamage system
 - **vehicle**: speed, armor (value + damageReduction), crew (value/max), weapons (value/max), description/biography/notes; weapon items can be embedded
 
@@ -102,6 +103,8 @@ prepareDerivedData() {
   // etc.
 }
 ```
+
+**Critical gotcha — every `{{editor enriched.X}}` needs `enriched.X` built in `getData()`**: the sheet must call `TextEditor.implementation.enrichHTML` for each field (creature sheet: description, biography, notes). A missing one leaves the tab blank outside edit mode while the edit view (raw `system.X`) still shows content.
 
 **Critical gotcha — duplicate `name` attributes corrupt form data**: Two `<input name="system.foo.bar">` elements in the same Foundry sheet form cause Foundry to serialize the value as an array, which stringifies to `"val1,val2"` and corrupts on subsequent saves. Always ensure each field name appears exactly once per form.
 

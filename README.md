@@ -13,6 +13,8 @@ An unofficial implementation of Tuesday Knight's Mothership role playing system.
 - **TypeDataModel data layer** — replaces upstream `template.json` with explicit Foundry schema classes in `module/data/`, enabling proper field validation and type safety
 - **Vehicle actor type** — additional sheet and template for vehicle actors
 - **Potential stat** — character stat tracked separately from other saves; rolled at class selection for Psychic and Emissary characters
+- **Creature natural armor** — creature sheets have editable Armor Points and DMG Reduction fields for inherent armor; equipped armor items add on top and are shown as a "+N" label
+- **Creature Notes tab** — Notes content now renders on the creature sheet outside the editor
 
 #### Features
 - Full 1e AND 0e system support with conditions, rolltables, and macros for each
